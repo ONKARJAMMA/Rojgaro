@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ROJGARO – Trusted Home Services in Solapur</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+
+<!-- ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░
+     🔥 STEP 1: PASTE YOUR FIREBASE CONFIG HERE
+     Go to: console.firebase.google.com
+     → Your Project → Project Settings → Your apps → Add web app
+     → Copy the firebaseConfig object values below
+░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░ -->
+<script>
+  const FIREBASE_CONFIG = {
+    apiKey:            "AIzaSyCBdV6Mi5ATM4ruUpZ-wpoZeyg967t97aE",
+    authDomain:        "rojgaro.firebaseapp.com",
+    projectId:         "rojgaro",
+    storageBucket:     "rojgaro.firebasestorage.app",
+    messagingSenderId: "393735822742",
+    appId:             "1:393735822742:web:96b6716b951d25b32891b7"
+  };
+
+  // 🔑 STEP 2: Set your admin password
+  const ADMIN_PASSWORD = "rojgaro@admin123";
+
+  // 📱 WhatsApp number (already set)
+  const WA_NUMBER = "919322490967";
+</script>
+
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --brand:#1A56DB;--brand-dark:#1040A8;--brand-light:#EBF2FF;
+  --accent:#F59E0B;--accent-light:#FEF3C7;
+  --text:#111827;--text-muted:#6B7280;--border:#E5E7EB;
+  --bg:#FFFFFF;--bg-soft:#F9FAFB;
+  --wa:#25D366;--wa-dark:#1aad54;
+  --success:#059669;--success-bg:#ECFDF5;
+  --danger:#DC2626;--danger-bg:#FEF2F2;
+  --warning:#D97706;--warning-bg:#FFFBEB;
+  --r:12px;--shadow:0 1px 3px rgba(0,0,0,0.07),0 6px 20px rgba(0,0,0,0.06);
+}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;color:var(--text);background:var(--bg);line-height:1.65;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,h5{font-family:'Sora',sans-serif;line-height:1.2}
+a{text-decoration:none;color:inherit}
+
+/* LOADING SCREEN */
+#loadingScreen{position:fixed;inset:0;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:1rem}
+#loadingScreen .logo-big{font-family:'Sora',sans-serif;font-weight:800;font-size:2rem;color:var(--brand);display:flex;align-items:center;gap:12px}
+#loadingScreen .logo-big span{width:52px;height:52px;background:var(--brand);border-radius:14px;display:grid;place-items:center}
+.spinner{width:32px;height:32px;border:3px solid var(--brand-light);border-top-color:var(--brand);border-radius:50%;animation:spin 0.7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:200;background:rgba(255,255,255,0.97);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:66px}
+.logo{font-family:'Sora',sans-serif;font-weight:800;font-size:1.3rem;color:var(--brand);display:flex;align-items:center;gap:10px;cursor:pointer}
+.nav-links{display:flex;gap:4px;align-items:center}
+.nav-links a{color:var(--text-muted);font-weight:500;font-size:0.9rem;padding:7px 14px;border-radius:8px;transition:all 0.18s;cursor:pointer}
+.nav-links a:hover,.nav-links a.active{color:var(--brand);background:var(--brand-light)}
+.nav-wa{background:var(--wa);color:#fff !important;border-radius:8px;display:flex;align-items:center;gap:6px;padding:7px 14px}
+.nav-wa:hover{background:var(--wa-dark) !important}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px}
+.hamburger span{display:block;width:22px;height:2px;background:var(--text);border-radius:2px}
+.mob-menu{display:none;flex-direction:column;background:#fff;border-bottom:1px solid var(--border);padding:0.75rem 1.5rem 1rem}
+.mob-menu a{padding:11px 0;border-bottom:1px solid var(--border);font-weight:500;color:var(--text);cursor:pointer;font-size:0.95rem}
+.mob-menu a:last-child{border:none}
+
+/* PAGES */
+.page{display:none;animation:fadeIn 0.3s ease}
+.page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:10px;font-family:'Sora',sans-serif;font-weight:600;font-size:0.88rem;cursor:pointer;border:none;transition:all 0.2s;text-decoration:none;white-space:nowrap}
+.btn-primary{background:var(--brand);color:#fff}
+.btn-primary:hover{background:var(--brand-dark);transform:translateY(-1px);box-shadow:0 4px 16px rgba(26,86,219,0.3)}
+.btn-wa{background:var(--wa);color:#fff}
+.btn-wa:hover{background:var(--wa-dark);transform:translateY(-1px)}
+.btn-outline{background:transparent;color:var(--brand);border:1.5px solid var(--brand)}
+.btn-outline:hover{background:var(--brand-light)}
+.btn-danger{background:var(--danger);color:#fff}
+.btn-danger:hover{background:#b91c1c}
+.btn-success{background:var(--success);color:#fff}
+.btn-lg{padding:15px 30px;font-size:0.95rem}
+.btn-sm{padding:7px 14px;font-size:0.8rem}
+.btn-xs{padding:5px 10px;font-size:0.75rem;border-radius:7px}
+
+/* SECTION HELPERS */
+.section{padding:4.5rem 2rem}
+.section-soft{background:var(--bg-soft)}
+.container{max-width:1100px;margin:0 auto}
+.section-tag{display:inline-block;background:var(--brand-light);color:var(--brand);font-family:'Sora',sans-serif;font-weight:600;font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;padding:4px 12px;border-radius:99px;margin-bottom:0.8rem}
+.section-title{font-size:clamp(1.6rem,3vw,2.2rem);font-weight:800;color:var(--text);margin-bottom:0.5rem}
+.section-sub{font-size:0.95rem;color:var(--text-muted);max-width:540px}
+.text-center{text-align:center}
+.text-center .section-sub{margin:0 auto}
+
+/* CARDS */
+.card{background:#fff;border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow)}
+
+/* BADGES */
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:0.72rem;font-weight:600;padding:3px 9px;border-radius:99px}
+.badge-green{color:var(--success);background:var(--success-bg)}
+.badge-yellow{color:var(--warning);background:var(--warning-bg)}
+.badge-red{color:var(--danger);background:var(--danger-bg)}
+.badge-blue{color:var(--brand);background:var(--brand-light)}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+
+/* FORMS */
+.form-group{margin-bottom:1.1rem}
+.form-group label{display:block;font-weight:500;font-size:0.85rem;color:var(--text);margin-bottom:5px}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:9px;font-family:'DM Sans',sans-serif;font-size:0.93rem;color:var(--text);background:#fff;transition:border 0.2s,box-shadow 0.2s;outline:none}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(26,86,219,0.1)}
+.form-group textarea{resize:vertical;min-height:80px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+
+/* TOAST */
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#111827;color:#fff;padding:12px 22px;border-radius:10px;font-size:0.88rem;font-weight:500;z-index:9999;transition:transform 0.3s ease;pointer-events:none;white-space:nowrap}
+#toast.show{transform:translateX(-50%) translateY(0)}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:3rem 1rem;color:var(--text-muted)}
+.empty-state .es-icon{font-size:3rem;margin-bottom:1rem;opacity:0.4}
+.empty-state p{font-size:0.9rem}
+
+/* ═══════ HOME PAGE ═══════ */
+.hero{background:linear-gradient(135deg,#f0f4ff 0%,#fafafa 60%,#fff7e6 100%);padding:5rem 2rem 4rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-100px;right:-100px;width:500px;height:500px;background:radial-gradient(circle,rgba(26,86,219,0.06) 0%,transparent 70%);pointer-events:none}
+.hero-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center}
+.hero h1{font-size:clamp(2rem,4vw,2.9rem);font-weight:800;margin-bottom:1rem}
+.hero h1 em{font-style:normal;color:var(--brand)}
+.hero-sub{font-size:1rem;color:var(--text-muted);margin-bottom:2rem;max-width:420px}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap}
+.hero-visual{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.hero-card{background:#fff;border-radius:var(--r);border:1px solid var(--border);padding:1.2rem;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:6px;transition:transform 0.2s;cursor:pointer}
+.hero-card:hover{transform:translateY(-3px)}
+.hero-card-icon{font-size:1.6rem}
+.hero-card h4{font-size:0.88rem;font-weight:700}
+.hero-card p{font-size:0.76rem;color:var(--text-muted)}
+
+/* SERVICES GRID (home quick links) */
+.services-quick{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1rem;margin-top:2.5rem}
+.sq-card{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:1.4rem 1rem;text-align:center;cursor:pointer;transition:all 0.2s;box-shadow:var(--shadow)}
+.sq-card:hover{transform:translateY(-3px);border-color:var(--brand)}
+.sq-card .sq-icon{font-size:2rem;margin-bottom:0.5rem}
+.sq-card h4{font-size:0.88rem;font-weight:700}
+.sq-card .sq-price{font-size:0.75rem;color:var(--brand);font-weight:600;margin-top:3px}
+
+/* STEPS */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:2.5rem}
+.step{text-align:center;padding:2rem 1.5rem;background:#fff;border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow)}
+.step-num{width:42px;height:42px;background:var(--brand);color:#fff;border-radius:50%;display:grid;place-items:center;font-family:'Sora',sans-serif;font-weight:800;font-size:1rem;margin:0 auto 1rem}
+.step h3{font-size:0.95rem;font-weight:700;margin-bottom:0.4rem}
+.step p{font-size:0.84rem;color:var(--text-muted)}
+
+/* WHY US */
+.why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1.3rem;margin-top:2.5rem}
+.why-card{padding:1.4rem;border-radius:var(--r);border:1px solid var(--border);background:#fff;box-shadow:var(--shadow)}
+.why-icon{font-size:1.7rem;margin-bottom:0.6rem}
+.why-card h3{font-size:0.92rem;font-weight:700;margin-bottom:0.3rem}
+.why-card p{font-size:0.82rem;color:var(--text-muted)}
+
+/* CTA BANNER */
+.cta-banner{background:var(--brand);color:#fff;border-radius:16px;padding:2.5rem 2rem;display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+.cta-banner h2{font-size:clamp(1.3rem,2.5vw,1.8rem);font-weight:800}
+.cta-banner p{opacity:0.85;margin-top:0.3rem;font-size:0.9rem}
+
+/* ═══════ SERVICES PAGE ═══════ */
+.services-page-hero{background:linear-gradient(135deg,#f0f4ff,#fff);padding:3rem 2rem;text-align:center}
+.services-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem;margin-top:2.5rem}
+.service-card{background:#fff;border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);transition:transform 0.2s,box-shadow 0.2s}
+.service-card:hover{transform:translateY(-4px);box-shadow:0 8px 32px rgba(0,0,0,0.1)}
+.service-card-top{padding:1.8rem 1.4rem 1.2rem;display:flex;align-items:flex-start;gap:1rem}
+.service-emoji{font-size:2.3rem;flex-shrink:0}
+.service-card h3{font-size:1rem;font-weight:700;margin-bottom:0.3rem}
+.service-card p{font-size:0.83rem;color:var(--text-muted)}
+.service-card-bottom{padding:0.9rem 1.4rem 1.3rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.service-price{font-family:'Sora',sans-serif;font-size:0.82rem;color:var(--text-muted)}
+.service-price strong{color:var(--brand);font-size:0.97rem}
+
+/* ═══════ BOOKING PAGE ═══════ */
+.booking-page{padding:3.5rem 2rem;background:var(--bg-soft);min-height:80vh}
+.booking-inner{max-width:680px;margin:0 auto}
+.booking-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:2.2rem;box-shadow:var(--shadow)}
+.form-divider{text-align:center;margin:1.3rem 0;color:var(--text-muted);font-size:0.83rem;position:relative}
+.form-divider::before,.form-divider::after{content:'';position:absolute;top:50%;width:42%;height:1px;background:var(--border)}
+.form-divider::before{left:0}.form-divider::after{right:0}
+
+/* ═══════ WORKERS PAGE ═══════ */
+.workers-hero{background:linear-gradient(135deg,#f0f4ff,#fff7e6);padding:3rem 2rem;text-align:center}
+.workers-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1.3rem;margin-top:2.5rem}
+.worker-card{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:1.5rem;box-shadow:var(--shadow);text-align:center;transition:transform 0.2s}
+.worker-card:hover{transform:translateY(-3px)}
+.worker-avatar{width:68px;height:68px;border-radius:50%;background:var(--brand-light);color:var(--brand);display:grid;place-items:center;font-family:'Sora',sans-serif;font-weight:800;font-size:1.4rem;margin:0 auto 0.8rem}
+.worker-card h3{font-size:0.97rem;font-weight:700;margin-bottom:0.3rem}
+.worker-skill{font-size:0.79rem;color:var(--brand);font-weight:600;background:var(--brand-light);padding:3px 10px;border-radius:99px;display:inline-block;margin-bottom:0.5rem}
+.worker-info{font-size:0.8rem;color:var(--text-muted);margin-bottom:0.25rem}
+.worker-phone{font-size:0.82rem;font-weight:600;color:var(--text);margin-bottom:0.8rem}
+
+/* ═══════ CONTACT PAGE ═══════ */
+.contact-page{padding:3.5rem 2rem;background:var(--bg-soft)}
+.contact-inner{max-width:900px;margin:0 auto}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:2.5rem}
+.contact-card{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:1.4rem;box-shadow:var(--shadow);display:flex;align-items:flex-start;gap:1rem}
+.contact-icon{width:42px;height:42px;border-radius:10px;background:var(--brand-light);display:grid;place-items:center;font-size:1.1rem;flex-shrink:0}
+.contact-card h4{font-size:0.86rem;font-weight:600;color:var(--text-muted);margin-bottom:2px}
+.contact-card p,.contact-card a{font-size:0.93rem;font-weight:500;color:var(--text)}
+.contact-form-card{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:1.8rem;box-shadow:var(--shadow)}
+
+/* ═══════ ADMIN PANEL ═══════ */
+#page-admin{display:none}
+#page-admin.active{display:block}
+.admin-layout{display:grid;grid-template-columns:240px 1fr;min-height:calc(100vh - 66px)}
+.admin-sidebar{background:#111827;padding:1.5rem 0;position:sticky;top:66px;height:calc(100vh - 66px);overflow-y:auto}
+.admin-sidebar-brand{padding:0 1.5rem 1.5rem;border-bottom:1px solid #1f2937;margin-bottom:1rem}
+.admin-sidebar-brand p{font-family:'Sora',sans-serif;font-weight:800;font-size:1rem;color:#fff}
+.admin-sidebar-brand span{font-size:0.75rem;color:#6B7280}
+.admin-nav a{display:flex;align-items:center;gap:10px;padding:10px 1.5rem;font-size:0.88rem;font-weight:500;color:#9CA3AF;cursor:pointer;transition:all 0.2s;border-left:3px solid transparent}
+.admin-nav a:hover{color:#fff;background:#1f2937}
+.admin-nav a.active{color:#fff;background:#1f2937;border-left-color:var(--brand)}
+.admin-nav a .nav-icon{font-size:1rem;width:20px;text-align:center}
+.admin-content{background:var(--bg-soft);padding:2rem;overflow-y:auto}
+.admin-section{display:none}
+.admin-section.active{display:block}
+.admin-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem}
+.admin-header h2{font-size:1.3rem;font-weight:800}
+.admin-header p{font-size:0.83rem;color:var(--text-muted);margin-top:2px}
+
+/* STAT CARDS */
+.stat-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin-bottom:2rem}
+.stat-card{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:1.3rem;box-shadow:var(--shadow)}
+.stat-card-label{font-size:0.78rem;color:var(--text-muted);margin-bottom:4px}
+.stat-card-value{font-family:'Sora',sans-serif;font-size:1.8rem;font-weight:800;color:var(--text)}
+.stat-card-sub{font-size:0.75rem;color:var(--text-muted);margin-top:2px}
+
+/* ADMIN TABLE */
+.table-wrap{background:#fff;border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
+.table-toolbar{padding:1rem 1.2rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.table-toolbar input{padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:0.85rem;outline:none;min-width:200px}
+.table-toolbar input:focus{border-color:var(--brand)}
+table{width:100%;border-collapse:collapse}
+thead th{background:var(--bg-soft);padding:10px 14px;text-align:left;font-size:0.78rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.04em;border-bottom:1px solid var(--border)}
+tbody tr{border-bottom:1px solid var(--border);transition:background 0.15s}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:var(--bg-soft)}
+tbody td{padding:11px 14px;font-size:0.86rem;color:var(--text)}
+.td-actions{display:flex;gap:6px;align-items:center}
+
+/* ADMIN MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:1000;display:none;align-items:center;justify-content:center;padding:1rem}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:16px;width:100%;max-width:540px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.2)}
+.modal-header{padding:1.5rem 1.5rem 1rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.modal-header h3{font-size:1.1rem;font-weight:700}
+.modal-close{width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:none;cursor:pointer;display:grid;place-items:center;font-size:1.1rem;color:var(--text-muted);transition:all 0.2s}
+.modal-close:hover{background:var(--bg-soft)}
+.modal-body{padding:1.5rem}
+.modal-footer{padding:1rem 1.5rem;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:10px}
+
+/* LOGIN */
+.admin-login{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg-soft);padding:2rem}
+.login-card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:2.5rem;width:100%;max-width:400px;box-shadow:var(--shadow);text-align:center}
+.login-card .login-logo{font-family:'Sora',sans-serif;font-weight:800;font-size:1.5rem;color:var(--brand);margin-bottom:0.3rem}
+.login-card p{font-size:0.85rem;color:var(--text-muted);margin-bottom:2rem}
+.login-error{color:var(--danger);font-size:0.83rem;margin-top:0.5rem;display:none}
+
+/* SELECT STATUS */
+.status-select{padding:5px 9px;border-radius:7px;border:1px solid var(--border);font-size:0.78rem;font-weight:600;cursor:pointer;outline:none;background:#fff}
+
+/* FLOATING WA */
+.wa-float{position:fixed;bottom:24px;right:24px;z-index:500;width:54px;height:54px;background:var(--wa);border-radius:50%;display:grid;place-items:center;box-shadow:0 4px 20px rgba(37,211,102,0.4);cursor:pointer;transition:transform 0.2s;text-decoration:none}
+.wa-float:hover{transform:scale(1.1)}
+.wa-float svg{width:26px;height:26px;fill:#fff}
+
+/* FOOTER */
+footer{background:#111827;color:#D1D5DB;padding:2.5rem 2rem 1.5rem}
+.footer-inner{max-width:1100px;margin:0 auto}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr;gap:2rem;margin-bottom:1.5rem}
+.footer-brand{font-family:'Sora',sans-serif;font-weight:800;font-size:1.2rem;color:#fff}
+.footer-tagline{font-size:0.82rem;color:#9CA3AF;margin-top:0.5rem;max-width:240px;line-height:1.6}
+.footer-col h4{font-family:'Sora',sans-serif;font-size:0.82rem;font-weight:600;color:#fff;margin-bottom:0.7rem;text-transform:uppercase;letter-spacing:0.05em}
+.footer-col a{display:block;font-size:0.82rem;color:#9CA3AF;margin-bottom:5px;cursor:pointer;transition:color 0.2s}
+.footer-col a:hover{color:#fff}
+.footer-bottom{border-top:1px solid #374151;padding-top:1.2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem}
+.footer-bottom p,.made-by{font-size:0.78rem;color:#6B7280}
+.made-by strong{color:#9CA3AF}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .admin-layout{grid-template-columns:1fr}
+  .admin-sidebar{position:relative;top:0;height:auto;display:flex;flex-wrap:wrap;align-items:center;padding:0.5rem}
+  .admin-sidebar-brand{border:none;padding:0.5rem 1rem;margin:0}
+  .admin-nav{display:flex;flex-wrap:wrap}
+  .admin-nav a{padding:8px 12px;border-left:none;border-bottom:3px solid transparent;font-size:0.82rem}
+  .admin-nav a.active{border-bottom-color:var(--brand);border-left-color:transparent}
+  .footer-top{grid-template-columns:1fr}
+}
+@media(max-width:768px){
+  nav{padding:0 1rem}
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  .hero-inner{grid-template-columns:1fr}
+  .hero-visual{display:none}
+  .steps{grid-template-columns:1fr}
+  .form-row{grid-template-columns:1fr}
+  .contact-grid{grid-template-columns:1fr}
+  .section{padding:3rem 1rem}
+  .cta-banner{text-align:center;justify-content:center}
+}
+@media(max-width:480px){
+  .hero{padding:3rem 1rem 2.5rem}
+  .hero-btns{flex-direction:column}
+  .booking-card{padding:1.4rem}
+  tbody td{padding:8px 10px;font-size:0.8rem}
+  thead th{padding:8px 10px}
+}
+</style>
+</head>
+<body>
+
+<div id="loadingScreen">
+  <div class="logo-big">
+    <span>
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+      </svg>
+    </span>
+    ROJGARO
+  </div>
+  <div class="spinner"></div>
+</div>
+
+<!-- NAV -->
+<nav id="mainNav" style="display:none">
+  <div class="logo" onclick="showPage('home')">
+    <span style="width:36px;height:36px;background:var(--brand);border-radius:9px;display:grid;place-items:center;flex-shrink:0">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+      </svg>
+    </span>
+    ROJGARO
+  </div>
+  <div class="nav-links">
+    <a onclick="showPage('home')" id="nav-home" class="active">Home</a>
+    <a onclick="showPage('services')" id="nav-services">Services</a>
+    <a onclick="showPage('booking')" id="nav-booking">Book Now</a>
+    <a onclick="showPage('workers')" id="nav-workers">Workers</a>
+    <a onclick="showPage('contact')" id="nav-contact">Contact</a>
+    <a onclick="showPage('admin')" id="nav-admin" style="color:var(--text-muted);font-size:0.82rem">⚙ Admin</a>
+    <a onclick="openWA('Hello! I need a home service in Solapur.')" class="nav-wa">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.114.553 4.1 1.522 5.827L0 24l6.343-1.49A11.953 11.953 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.65-.513-5.17-1.407l-.37-.22-3.764.885.947-3.658-.241-.379A9.946 9.946 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+      WhatsApp
+    </a>
+  </div>
+  <div class="hamburger" onclick="toggleMob()"><span></span><span></span><span></span></div>
+</nav>
+<div class="mob-menu" id="mobMenu">
+  <a onclick="showPage('home');toggleMob()">🏠 Home</a>
+  <a onclick="showPage('services');toggleMob()">🔧 Services</a>
+  <a onclick="showPage('booking');toggleMob()">📅 Book Now</a>
+  <a onclick="showPage('workers');toggleMob()">👷 Workers</a>
+  <a onclick="showPage('contact');toggleMob()">📞 Contact</a>
+  <a onclick="showPage('admin');toggleMob()">⚙ Admin</a>
+</div>
+
+<!-- ═══════════ HOME ═══════════ -->
+<div class="page active" id="page-home">
+  <section class="hero">
+    <div class="hero-inner">
+      <div>
+        <h1>Find <em>Trusted Workers</em><br>in Solapur – Fast</h1>
+        <p class="hero-sub">Plumbers, electricians, cleaners & more — verified, reliable, and just one WhatsApp away.</p>
+        <div class="hero-btns">
+          <a class="btn btn-primary btn-lg" onclick="showPage('booking')">📅 Book a Service</a>
+          <a class="btn btn-wa btn-lg" onclick="openWA('Hello! I need a home service in Solapur.')">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.114.553 4.1 1.522 5.827L0 24l6.343-1.49A11.953 11.953 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.65-.513-5.17-1.407l-.37-.22-3.764.885.947-3.658-.241-.379A9.946 9.946 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+            Chat on WhatsApp
+          </a>
+        </div>
+      </div>
+      <div class="hero-visual" id="heroVisual">
+        <div class="hero-card" onclick="bookService('Plumbing')"><div class="hero-card-icon">🔧</div><h4>Plumbing</h4><p>Leaks, pipes & taps</p></div>
+        <div class="hero-card" onclick="bookService('Electrician')"><div class="hero-card-icon">⚡</div><h4>Electrician</h4><p>Wiring & fittings</p></div>
+        <div class="hero-card" onclick="bookService('Cleaning')"><div class="hero-card-icon">🧹</div><h4>Cleaning</h4><p>Home & deep clean</p></div>
+        <div class="hero-card" onclick="bookService('Carpenter')"><div class="hero-card-icon">🪚</div><h4>Carpenter</h4><p>Furniture & wood</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container text-center">
+      <div class="section-tag">What We Offer</div>
+      <h2 class="section-title">Our Services</h2>
+      <p class="section-sub">Tap any service to book instantly</p>
+      <div class="services-quick" id="homeServicesGrid">
+        <div class="sq-card" style="opacity:0.5"><div class="sq-icon">⏳</div><h4>Loading...</h4></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-soft">
+    <div class="container text-center">
+      <div class="section-tag">How It Works</div>
+      <h2 class="section-title">3 Simple Steps</h2>
+      <div class="steps">
+        <div class="step"><div class="step-num">1</div><h3>Choose a Service</h3><p>Pick from our list of verified home services in Solapur</p></div>
+        <div class="step"><div class="step-num">2</div><h3>Share Your Details</h3><p>Fill the booking form or WhatsApp us your name, address & service</p></div>
+        <div class="step"><div class="step-num">3</div><h3>Worker Arrives</h3><p>A verified worker arrives at your doorstep at your preferred time</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="text-center">
+        <div class="section-tag">Why Choose Us</div>
+        <h2 class="section-title">Why Solapur Trusts ROJGARO</h2>
+      </div>
+      <div class="why-grid">
+        <div class="why-card"><div class="why-icon">✅</div><h3>Verified Workers</h3><p>Every worker is background-checked and skill-verified</p></div>
+        <div class="why-card"><div class="why-icon">⚡</div><h3>Same-Day Service</h3><p>Book in the morning, get a worker at your home the same day</p></div>
+        <div class="why-card"><div class="why-icon">💰</div><h3>Fair Pricing</h3><p>No hidden charges. You know the cost before work begins</p></div>
+        <div class="why-card"><div class="why-icon">📞</div><h3>WhatsApp Support</h3><p>Reach us instantly. Quick replies, no waiting on hold</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:2rem">
+    <div class="container">
+      <div class="cta-banner">
+        <div>
+          <h2>Ready to book a service?</h2>
+          <p>WhatsApp us right now — we reply within minutes!</p>
+        </div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <a class="btn" style="background:#fff;color:var(--brand)" onclick="showPage('booking')">📅 Book Now</a>
+          <a class="btn btn-wa" onclick="openWA('Hello! I need a home service in Solapur.')">WhatsApp Us</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════ SERVICES ═══════════ -->
+<div class="page" id="page-services">
+  <section class="services-page-hero">
+    <div class="container">
+      <div class="section-tag">All Services</div>
+      <h2 class="section-title">Our Home Services</h2>
+      <p class="section-sub" style="margin:0.4rem auto 0">Tap "Book Now" on any service to send us a WhatsApp message</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <div class="services-grid" id="servicesGrid">
+        <div class="empty-state"><div class="es-icon">⏳</div><p>Loading services...</p></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════ BOOKING ═══════════ -->
+<div class="page" id="page-booking">
+  <div class="booking-page">
+    <div class="booking-inner">
+      <div class="booking-card">
+        <div style="text-align:center;margin-bottom:1.8rem">
+          <div class="section-tag">Quick Booking</div>
+          <h2 style="font-size:1.7rem;font-weight:800">Book a Service</h2>
+          <p style="color:var(--text-muted);margin-top:0.4rem;font-size:0.9rem">Fill your details — we confirm within 15 minutes!</p>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Full Name *</label><input type="text" id="f-name" placeholder="Your full name"></div>
+          <div class="form-group"><label>Phone Number *</label><input type="tel" id="f-phone" placeholder="Your WhatsApp number"></div>
+        </div>
+        <div class="form-group"><label>Address in Solapur *</label><input type="text" id="f-address" placeholder="e.g. Plot 12, Vijapur Road, Solapur"></div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Service Needed *</label>
+            <select id="f-service"><option value="">-- Select a Service --</option></select>
+          </div>
+          <div class="form-group"><label>Preferred Date & Time</label><input type="datetime-local" id="f-time"></div>
+        </div>
+        <div class="form-group"><label>Additional Details</label><textarea id="f-note" placeholder="Describe your problem briefly..."></textarea></div>
+        <div class="form-divider">Click below to confirm booking</div>
+        <button class="btn btn-wa" style="width:100%;justify-content:center;font-size:0.95rem;padding:14px" onclick="submitBooking()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.114.553 4.1 1.522 5.827L0 24l6.343-1.49A11.953 11.953 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.65-.513-5.17-1.407l-.37-.22-3.764.885.947-3.658-.241-.379A9.946 9.946 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+          Confirm Booking via WhatsApp
+        </button>
+        <p style="text-align:center;font-size:0.78rem;color:var(--text-muted);margin-top:0.8rem">Booking is also saved to our system for tracking</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ WORKERS ═══════════ -->
+<div class="page" id="page-workers">
+  <section class="workers-hero">
+    <div class="container">
+      <div class="section-tag">Our Team</div>
+      <h2 class="section-title">Our Verified Workers</h2>
+      <p class="section-sub" style="margin:0.4rem auto 0">All workers are background-verified. Your safety is our priority.</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <div class="workers-grid" id="workersGrid">
+        <div class="empty-state"><div class="es-icon">⏳</div><p>Loading workers...</p></div>
+      </div>
+      <div style="text-align:center;margin-top:2.5rem;padding:1.8rem;background:var(--brand-light);border-radius:var(--r)">
+        <h3 style="font-size:1rem;margin-bottom:0.4rem">Want to work with us?</h3>
+        <p style="color:var(--text-muted);font-size:0.87rem;margin-bottom:1rem">Are you a skilled worker in Solapur? Join ROJGARO and grow your income.</p>
+        <a class="btn btn-primary" onclick="openWA('Hi! I am a skilled worker in Solapur and I want to join ROJGARO.')">Join as a Worker ↗</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ═══════════ CONTACT ═══════════ -->
+<div class="page" id="page-contact">
+  <div class="contact-page">
+    <div class="contact-inner">
+      <div class="text-center">
+        <div class="section-tag">Get In Touch</div>
+        <h2 class="section-title">Contact Us</h2>
+        <p class="section-sub" style="margin:0.4rem auto 0">Reach us via WhatsApp, call, or the form below.</p>
+      </div>
+      <div class="contact-grid">
+        <div style="display:flex;flex-direction:column;gap:1rem">
+          <div class="contact-card"><div class="contact-icon">📱</div><div><h4>WhatsApp (Fastest)</h4><a onclick="openWA('Hello ROJGARO!')" style="color:var(--wa);cursor:pointer;font-weight:600">+91 93224 90967</a></div></div>
+          <div class="contact-card"><div class="contact-icon">📞</div><div><h4>Phone</h4><a href="tel:+919322490967" style="color:var(--brand)">+91 93224 90967</a></div></div>
+          <div class="contact-card"><div class="contact-icon">🕐</div><div><h4>Working Hours</h4><p>Monday – Sunday: 7 AM – 9 PM</p></div></div>
+          <div class="contact-card"><div class="contact-icon">📍</div><div><h4>Location</h4><p>Serving all areas of Solapur, Maharashtra</p></div></div>
+          <a class="btn btn-wa" style="width:100%;justify-content:center" onclick="openWA('Hello ROJGARO! I need a home service.')">Chat on WhatsApp Now</a>
+        </div>
+        <div class="contact-form-card">
+          <h3 style="font-size:1.05rem;font-weight:700;margin-bottom:1.3rem">Send us a message</h3>
+          <div class="form-group"><label>Your Name</label><input type="text" id="c-name" placeholder="Full name"></div>
+          <div class="form-group"><label>Phone Number</label><input type="tel" id="c-phone" placeholder="WhatsApp number"></div>
+          <div class="form-group"><label>Service / Query</label>
+            <select id="c-service">
+              <option value="">-- Select --</option>
+              <option>Plumbing</option><option>Home Cleaning</option><option>Electrician</option>
+              <option>Carpenter</option><option>Painting</option><option>Pest Control</option>
+              <option>General Enquiry</option><option>Join as Worker</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Message</label><textarea id="c-msg" placeholder="How can we help?"></textarea></div>
+          <a class="btn btn-wa" style="width:100%;justify-content:center" onclick="sendContactWA()">Send via WhatsApp</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ ADMIN ═══════════ -->
+<div class="page" id="page-admin">
+
+  <!-- LOGIN -->
+  <div id="adminLogin" class="admin-login">
+    <div class="login-card">
+      <div class="login-logo">⚙ Admin Panel</div>
+      <p>ROJGARO Dashboard — Authorised Access Only</p>
+      <div class="form-group" style="text-align:left"><label>Password</label><input type="password" id="adminPassInput" placeholder="Enter admin password" onkeydown="if(event.key==='Enter')checkAdminLogin()"></div>
+      <div class="login-error" id="loginError">❌ Wrong password. Try again.</div>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:0.5rem" onclick="checkAdminLogin()">Login to Dashboard</button>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="adminDashboard" style="display:none">
+    <div class="admin-layout">
+      <div class="admin-sidebar">
+        <div class="admin-sidebar-brand">
+          <p>ROJGARO</p>
+          <span>Admin Dashboard</span>
+        </div>
+        <nav class="admin-nav">
+          <a onclick="switchAdmin('overview')" id="adm-overview" class="active"><span class="nav-icon">📊</span> Overview</a>
+          <a onclick="switchAdmin('bookings')" id="adm-bookings"><span class="nav-icon">📋</span> Bookings</a>
+          <a onclick="switchAdmin('workers')" id="adm-workers"><span class="nav-icon">👷</span> Workers</a>
+          <a onclick="switchAdmin('services')" id="adm-services"><span class="nav-icon">🔧</span> Services</a>
+          <a onclick="adminLogout()" style="margin-top:auto;color:#EF4444"><span class="nav-icon">🚪</span> Logout</a>
+        </nav>
+      </div>
+      <div class="admin-content">
+
+        <!-- OVERVIEW -->
+        <div class="admin-section active" id="admin-overview">
+          <div class="admin-header">
+            <div><h2>Overview</h2><p>Welcome back, ROJGARO Admin 👋</p></div>
+          </div>
+          <div class="stat-cards">
+            <div class="stat-card"><div class="stat-card-label">Total Bookings</div><div class="stat-card-value" id="stat-total">–</div><div class="stat-card-sub">All time</div></div>
+            <div class="stat-card"><div class="stat-card-label">Pending</div><div class="stat-card-value" id="stat-pending" style="color:var(--warning)">–</div><div class="stat-card-sub">Needs attention</div></div>
+            <div class="stat-card"><div class="stat-card-label">Confirmed</div><div class="stat-card-value" id="stat-confirmed" style="color:var(--brand)">–</div><div class="stat-card-sub">In progress</div></div>
+            <div class="stat-card"><div class="stat-card-label">Completed</div><div class="stat-card-value" id="stat-completed" style="color:var(--success)">–</div><div class="stat-card-sub">Done</div></div>
+            <div class="stat-card"><div class="stat-card-label">Active Workers</div><div class="stat-card-value" id="stat-workers">–</div><div class="stat-card-sub">On platform</div></div>
+            <div class="stat-card"><div class="stat-card-label">Services</div><div class="stat-card-value" id="stat-services">–</div><div class="stat-card-sub">Available</div></div>
+          </div>
+          <h3 style="font-size:1rem;font-weight:700;margin-bottom:1rem">Recent Bookings</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Customer</th><th>Service</th><th>Date</th><th>Status</th></tr></thead>
+              <tbody id="recentBookingsTable"><tr><td colspan="4" style="text-align:center;padding:2rem;color:var(--text-muted)">Loading...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- BOOKINGS -->
+        <div class="admin-section" id="admin-bookings">
+          <div class="admin-header">
+            <div><h2>Bookings</h2><p>All customer booking requests</p></div>
+          </div>
+          <div class="table-wrap">
+            <div class="table-toolbar">
+              <input type="text" id="bookingSearch" placeholder="Search by name, phone, service..." oninput="renderBookingsTable()">
+              <select id="bookingFilter" onchange="renderBookingsTable()" style="padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:0.85rem;outline:none">
+                <option value="">All Status</option>
+                <option value="Pending">Pending</option>
+                <option value="Confirmed">Confirmed</option>
+                <option value="Completed">Completed</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
+            </div>
+            <div style="overflow-x:auto">
+              <table>
+                <thead><tr><th>#</th><th>Customer</th><th>Phone</th><th>Service</th><th>Address</th><th>Date/Time</th><th>Status</th><th>Actions</th></tr></thead>
+                <tbody id="bookingsTable"><tr><td colspan="8" style="text-align:center;padding:2rem;color:var(--text-muted)">Loading...</td></tr></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- WORKERS -->
+        <div class="admin-section" id="admin-workers">
+          <div class="admin-header">
+            <div><h2>Workers</h2><p>Manage your worker roster</p></div>
+            <button class="btn btn-primary btn-sm" onclick="openWorkerModal()">+ Add Worker</button>
+          </div>
+          <div class="table-wrap">
+            <div class="table-toolbar">
+              <input type="text" id="workerSearch" placeholder="Search workers..." oninput="renderWorkersTable()">
+            </div>
+            <div style="overflow-x:auto">
+              <table>
+                <thead><tr><th>Name</th><th>Skill</th><th>Phone</th><th>Location</th><th>Status</th><th>Actions</th></tr></thead>
+                <tbody id="workersTable"><tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--text-muted)">Loading...</td></tr></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- SERVICES -->
+        <div class="admin-section" id="admin-services">
+          <div class="admin-header">
+            <div><h2>Services</h2><p>Manage service listings shown to customers</p></div>
+            <button class="btn btn-primary btn-sm" onclick="openServiceModal()">+ Add Service</button>
+          </div>
+          <div class="table-wrap">
+            <div style="overflow-x:auto">
+              <table>
+                <thead><tr><th>Icon</th><th>Service Name</th><th>Description</th><th>Starting Price</th><th>Status</th><th>Actions</th></tr></thead>
+                <tbody id="servicesTable"><tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--text-muted)">Loading...</td></tr></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER (hidden on admin) -->
+<footer id="siteFooter">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand">ROJGARO</div>
+        <p class="footer-tagline">Trusted home services across Solapur, Maharashtra. Book in seconds via WhatsApp.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <a onclick="showPage('services')">Plumbing</a>
+        <a onclick="showPage('services')">Cleaning</a>
+        <a onclick="showPage('services')">Electrician</a>
+        <a onclick="showPage('services')">Carpenter</a>
+        <a onclick="showPage('services')">Painting</a>
+        <a onclick="showPage('services')">Pest Control</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a onclick="showPage('home')">Home</a>
+        <a onclick="showPage('workers')">Our Workers</a>
+        <a onclick="showPage('booking')">Book Now</a>
+        <a onclick="showPage('contact')">Contact</a>
+        <a onclick="openWA('Hi! I want to join ROJGARO as a worker.')">Join as Worker</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 ROJGARO. All rights reserved. Solapur, Maharashtra.</p>
+      <p class="made-by">Made with ❤️ by <strong>JAMS</strong></p>
+    </div>
+  </div>
+</footer>
+
+<!-- FLOATING WA -->
+<a class="wa-float" id="waFloat" onclick="openWA('Hello ROJGARO! I need a home service in Solapur.')">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.114.553 4.1 1.522 5.827L0 24l6.343-1.49A11.953 11.953 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.65-.513-5.17-1.407l-.37-.22-3.764.885.947-3.658-.241-.379A9.946 9.946 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+</a>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<!-- MODALS -->
+<!-- Worker Modal -->
+<div class="modal-overlay" id="workerModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="workerModalTitle">Add Worker</h3>
+      <button class="modal-close" onclick="closeModal('workerModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="wm-id">
+      <div class="form-row">
+        <div class="form-group"><label>Full Name *</label><input type="text" id="wm-name" placeholder="Worker name"></div>
+        <div class="form-group"><label>Skill / Service *</label><input type="text" id="wm-skill" placeholder="e.g. Plumbing"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Phone Number *</label><input type="tel" id="wm-phone" placeholder="Mobile number"></div>
+        <div class="form-group"><label>Location</label><input type="text" id="wm-location" placeholder="e.g. Solapur"></div>
+      </div>
+      <div class="form-group">
+        <label>Status</label>
+        <select id="wm-status">
+          <option value="Available">Available</option>
+          <option value="Busy">Busy</option>
+          <option value="Inactive">Inactive</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline btn-sm" onclick="closeModal('workerModal')">Cancel</button>
+      <button class="btn btn-primary btn-sm" onclick="saveWorker()">Save Worker</button>
+    </div>
+  </div>
+</div>
+
+<!-- Service Modal -->
+<div class="modal-overlay" id="serviceModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="serviceModalTitle">Add Service</h3>
+      <button class="modal-close" onclick="closeModal('serviceModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="sm-id">
+      <div class="form-row">
+        <div class="form-group"><label>Service Name *</label><input type="text" id="sm-name" placeholder="e.g. Plumbing"></div>
+        <div class="form-group"><label>Emoji Icon *</label><input type="text" id="sm-icon" placeholder="e.g. 🔧" style="font-size:1.4rem"></div>
+      </div>
+      <div class="form-group"><label>Description *</label><textarea id="sm-desc" placeholder="Brief description of the service..."></textarea></div>
+      <div class="form-row">
+        <div class="form-group"><label>Starting Price *</label><input type="text" id="sm-price" placeholder="e.g. ₹200"></div>
+        <div class="form-group">
+          <label>Status</label>
+          <select id="sm-status"><option value="Active">Active</option><option value="Inactive">Inactive</option></select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline btn-sm" onclick="closeModal('serviceModal')">Cancel</button>
+      <button class="btn btn-primary btn-sm" onclick="saveService()">Save Service</button>
+    </div>
+  </div>
+</div>
+
+<!-- Booking View Modal -->
+<div class="modal-overlay" id="bookingModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Booking Details</h3>
+      <button class="modal-close" onclick="closeModal('bookingModal')">✕</button>
+    </div>
+    <div class="modal-body" id="bookingModalBody"></div>
+    <div class="modal-footer">
+      <button class="btn btn-outline btn-sm" onclick="closeModal('bookingModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Firebase SDKs -->
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, onSnapshot, query, orderBy, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+// ── INIT ──
+const app = initializeApp(FIREBASE_CONFIG);
+const db  = getFirestore(app);
+
+// ── STATE ──
+window._bookings = [];
+window._workers  = [];
+window._services = [];
+
+// ── SEED DEFAULT SERVICES if none exist ──
+async function seedServices() {
+  const snap = await getDocs(collection(db, 'services'));
+  if (!snap.empty) return;
+  const defaults = [
+    { name:'Plumbing',     icon:'🔧', desc:'Leaking taps, pipe repairs, drain blockages, bathroom fitting and all plumbing needs.',            price:'₹200',     status:'Active' },
+    { name:'Home Cleaning',icon:'🧹', desc:'Full home cleaning, kitchen deep clean, bathroom scrubbing, sofa & carpet cleaning.',               price:'₹399',     status:'Active' },
+    { name:'Electrician',  icon:'⚡', desc:'Fan & light installation, switch/socket repairs, wiring, MCB/fuse issues.',                        price:'₹150',     status:'Active' },
+    { name:'Carpenter',    icon:'🪚', desc:'Furniture assembly, door/window repair, almirah fitting, wood polish and custom woodwork.',         price:'₹250',     status:'Active' },
+    { name:'Painting',     icon:'🎨', desc:'Interior & exterior painting, texture work, waterproofing, putty & primer, full house paint jobs.', price:'₹10/sq ft',status:'Active' },
+    { name:'Pest Control', icon:'🐛', desc:'Cockroach, mosquito, termite, rodent and general pest control. Annual contracts available.',        price:'₹499',     status:'Active' },
+  ];
+  for (const s of defaults) await addDoc(collection(db, 'services'), { ...s, createdAt: serverTimestamp() });
+}
+
+// ── REAL-TIME LISTENERS ──
+onSnapshot(query(collection(db,'bookings'), orderBy('createdAt','desc')), snap => {
+  window._bookings = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  renderAll();
+});
+onSnapshot(query(collection(db,'workers'), orderBy('createdAt','desc')), snap => {
+  window._workers = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  renderAll();
+});
+onSnapshot(query(collection(db,'services'), orderBy('createdAt','asc')), snap => {
+  window._services = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  renderAll();
+});
+
+function renderAll() {
+  renderHomeServices();
+  renderServicesPage();
+  renderWorkersPage();
+  renderBookingSelect();
+  renderAdminStats();
+  renderBookingsTable();
+  renderWorkersTable();
+  renderServicesTable();
+  renderRecentBookings();
+}
+
+// ── PUBLIC: HOME SERVICES GRID ──
+window.renderHomeServices = function() {
+  const el = document.getElementById('homeServicesGrid');
+  if (!el) return;
+  const active = window._services.filter(s => s.status === 'Active');
+  if (!active.length) { el.innerHTML = '<div class="empty-state"><div class="es-icon">🔧</div><p>No services yet</p></div>'; return; }
+  el.innerHTML = active.map(s => `
+    <div class="sq-card" onclick="bookService('${s.name}')">
+      <div class="sq-icon">${s.icon}</div>
+      <h4>${s.name}</h4>
+      <div class="sq-price">From ${s.price}</div>
+    </div>`).join('');
+};
+
+// ── PUBLIC: SERVICES PAGE ──
+window.renderServicesPage = function() {
+  const el = document.getElementById('servicesGrid');
+  if (!el) return;
+  const active = window._services.filter(s => s.status === 'Active');
+  if (!active.length) { el.innerHTML = '<div class="empty-state"><div class="es-icon">🔧</div><p>No services available yet.</p></div>'; return; }
+  el.innerHTML = active.map(s => `
+    <div class="service-card">
+      <div class="service-card-top">
+        <div class="service-emoji">${s.icon}</div>
+        <div><h3>${s.name}</h3><p>${s.desc}</p></div>
+      </div>
+      <div class="service-card-bottom">
+        <div class="service-price">Starting <strong>${s.price}</strong></div>
+        <button class="btn btn-wa btn-sm" onclick="bookService('${s.name}')">Book Now</button>
+      </div>
+    </div>`).join('');
+};
+
+// ── PUBLIC: WORKERS PAGE ──
+window.renderWorkersPage = function() {
+  const el = document.getElementById('workersGrid');
+  if (!el) return;
+  const active = window._workers.filter(w => w.status === 'Available' || w.status === 'Busy');
+  if (!active.length) { el.innerHTML = '<div class="empty-state"><div class="es-icon">👷</div><p>No workers listed yet. Add them in the Admin panel.</p></div>'; return; }
+  el.innerHTML = active.map(w => {
+    const initials = w.name.split(' ').map(n=>n[0]).join('').toUpperCase().slice(0,2);
+    const badgeClass = w.status === 'Available' ? 'badge-green' : 'badge-yellow';
+    return `
+    <div class="worker-card">
+      <div class="worker-avatar">${initials}</div>
+      <h3>${w.name}</h3>
+      <div class="worker-skill">${w.skill}</div>
+      <div style="margin-bottom:0.6rem"><span class="badge ${badgeClass}"><span class="badge-dot"></span>${w.status}</span></div>
+      <div class="worker-info">📍 ${w.location || 'Solapur, Maharashtra'}</div>
+      <button class="btn btn-wa btn-sm" style="margin-top:0.8rem;width:100%;justify-content:center" onclick="bookService('${w.skill}')">Book ${w.name.split(' ')[0]}</button>
+    </div>`;
+  }).join('');
+};
+
+// ── BOOKING SELECT ──
+window.renderBookingSelect = function() {
+  const sel = document.getElementById('f-service');
+  if (!sel) return;
+  const active = window._services.filter(s => s.status === 'Active');
+  sel.innerHTML = '<option value="">-- Select a Service --</option>' + active.map(s => `<option>${s.name}</option>`).join('');
+};
+
+// ── ADMIN STATS ──
+window.renderAdminStats = function() {
+  const b = window._bookings;
+  document.getElementById('stat-total')?.setAttribute('textContent',b.length);
+  if(document.getElementById('stat-total')) document.getElementById('stat-total').textContent = b.length;
+  if(document.getElementById('stat-pending')) document.getElementById('stat-pending').textContent = b.filter(x=>x.status==='Pending').length;
+  if(document.getElementById('stat-confirmed')) document.getElementById('stat-confirmed').textContent = b.filter(x=>x.status==='Confirmed').length;
+  if(document.getElementById('stat-completed')) document.getElementById('stat-completed').textContent = b.filter(x=>x.status==='Completed').length;
+  if(document.getElementById('stat-workers')) document.getElementById('stat-workers').textContent = window._workers.length;
+  if(document.getElementById('stat-services')) document.getElementById('stat-services').textContent = window._services.filter(s=>s.status==='Active').length;
+};
+
+// ── RECENT BOOKINGS (overview) ──
+window.renderRecentBookings = function() {
+  const el = document.getElementById('recentBookingsTable');
+  if (!el) return;
+  const recent = window._bookings.slice(0, 8);
+  if (!recent.length) { el.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:1.5rem;color:var(--text-muted)">No bookings yet</td></tr>'; return; }
+  el.innerHTML = recent.map(b => `
+    <tr>
+      <td><strong>${b.name}</strong><br><span style="font-size:0.77rem;color:var(--text-muted)">${b.phone}</span></td>
+      <td>${b.service}</td>
+      <td style="font-size:0.8rem;color:var(--text-muted)">${b.preferredTime ? new Date(b.preferredTime).toLocaleDateString('en-IN') : '–'}</td>
+      <td>${statusBadge(b.status)}</td>
+    </tr>`).join('');
+};
+
+// ── BOOKINGS TABLE ──
+window.renderBookingsTable = function() {
+  const el = document.getElementById('bookingsTable');
+  if (!el) return;
+  const q = (document.getElementById('bookingSearch')?.value || '').toLowerCase();
+  const f = document.getElementById('bookingFilter')?.value || '';
+  let list = window._bookings.filter(b => {
+    const match = !q || [b.name,b.phone,b.service,b.address].some(v=>(v||'').toLowerCase().includes(q));
+    const statusMatch = !f || b.status === f;
+    return match && statusMatch;
+  });
+  if (!list.length) { el.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:2rem;color:var(--text-muted)">No bookings found</td></tr>'; return; }
+  el.innerHTML = list.map((b,i) => `
+    <tr>
+      <td style="color:var(--text-muted);font-size:0.78rem">${i+1}</td>
+      <td><strong>${b.name}</strong></td>
+      <td>${b.phone}</td>
+      <td>${b.service}</td>
+      <td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${b.address}">${b.address}</td>
+      <td style="font-size:0.8rem;color:var(--text-muted)">${b.preferredTime ? new Date(b.preferredTime).toLocaleString('en-IN',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}) : '–'}</td>
+      <td>
+        <select class="status-select" onchange="updateBookingStatus('${b.id}', this.value)">
+          ${['Pending','Confirmed','Completed','Cancelled'].map(s=>`<option ${b.status===s?'selected':''}>${s}</option>`).join('')}
+        </select>
+      </td>
+      <td>
+        <div class="td-actions">
+          <button class="btn btn-outline btn-xs" onclick="viewBooking('${b.id}')">View</button>
+          <button class="btn btn-danger btn-xs" onclick="deleteBooking('${b.id}')">Del</button>
+        </div>
+      </td>
+    </tr>`).join('');
+};
+
+// ── WORKERS TABLE ──
+window.renderWorkersTable = function() {
+  const el = document.getElementById('workersTable');
+  if (!el) return;
+  const q = (document.getElementById('workerSearch')?.value||'').toLowerCase();
+  let list = window._workers.filter(w => !q || [w.name,w.skill,w.phone,w.location].some(v=>(v||'').toLowerCase().includes(q)));
+  if (!list.length) { el.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--text-muted)">No workers found</td></tr>'; return; }
+  el.innerHTML = list.map(w => `
+    <tr>
+      <td><strong>${w.name}</strong></td>
+      <td>${w.skill}</td>
+      <td>${w.phone}</td>
+      <td>${w.location || 'Solapur'}</td>
+      <td>${statusBadge(w.status)}</td>
+      <td>
+        <div class="td-actions">
+          <button class="btn btn-outline btn-xs" onclick="openWorkerModal('${w.id}')">Edit</button>
+          <button class="btn btn-danger btn-xs" onclick="deleteWorker('${w.id}')">Del</button>
+        </div>
+      </td>
+    </tr>`).join('');
+};
+
+// ── SERVICES TABLE ──
+window.renderServicesTable = function() {
+  const el = document.getElementById('servicesTable');
+  if (!el) return;
+  if (!window._services.length) { el.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--text-muted)">No services yet</td></tr>'; return; }
+  el.innerHTML = window._services.map(s => `
+    <tr>
+      <td style="font-size:1.5rem">${s.icon}</td>
+      <td><strong>${s.name}</strong></td>
+      <td style="max-width:200px;font-size:0.82rem;color:var(--text-muted)">${s.desc.slice(0,60)}...</td>
+      <td><strong style="color:var(--brand)">${s.price}</strong></td>
+      <td>${statusBadge(s.status)}</td>
+      <td>
+        <div class="td-actions">
+          <button class="btn btn-outline btn-xs" onclick="openServiceModal('${s.id}')">Edit</button>
+          <button class="btn btn-danger btn-xs" onclick="deleteService('${s.id}')">Del</button>
+        </div>
+      </td>
+    </tr>`).join('');
+};
+
+// ── HELPERS ──
+function statusBadge(s) {
+  const map = { Pending:'badge-yellow', Confirmed:'badge-blue', Completed:'badge-green', Cancelled:'badge-red', Available:'badge-green', Busy:'badge-yellow', Inactive:'badge-red', Active:'badge-green' };
+  return `<span class="badge ${map[s]||'badge-blue'}">${s||'–'}</span>`;
+}
+
+// ── BOOKING SUBMIT ──
+window.submitBooking = async function() {
+  const name    = document.getElementById('f-name').value.trim();
+  const phone   = document.getElementById('f-phone').value.trim();
+  const address = document.getElementById('f-address').value.trim();
+  const service = document.getElementById('f-service').value;
+  const time    = document.getElementById('f-time').value;
+  const note    = document.getElementById('f-note').value.trim();
+  if (!name || !phone || !address || !service) { showToast('⚠️ Please fill Name, Phone, Address & Service'); return; }
+  try {
+    await addDoc(collection(db,'bookings'), { name, phone, address, service, preferredTime: time, notes: note, status: 'Pending', createdAt: serverTimestamp() });
+    showToast('✅ Booking saved! Opening WhatsApp...');
+    let msg = `📋 *New Booking – ROJGARO*\n\n👤 *Name:* ${name}\n📞 *Phone:* ${phone}\n📍 *Address:* ${address}\n🔧 *Service:* ${service}`;
+    if (time) msg += `\n🕐 *Time:* ${new Date(time).toLocaleString('en-IN')}`;
+    if (note) msg += `\n📝 *Notes:* ${note}`;
+    msg += '\n\nPlease confirm my booking. Thank you!';
+    setTimeout(() => openWA(msg), 800);
+    document.getElementById('f-name').value=''; document.getElementById('f-phone').value='';
+    document.getElementById('f-address').value=''; document.getElementById('f-service').value='';
+    document.getElementById('f-time').value=''; document.getElementById('f-note').value='';
+  } catch(e) { showToast('❌ Error saving booking. Check Firebase config.'); console.error(e); }
+};
+
+// ── UPDATE BOOKING STATUS ──
+window.updateBookingStatus = async function(id, status) {
+  try { await updateDoc(doc(db,'bookings',id), { status }); showToast('✅ Status updated'); }
+  catch(e) { showToast('❌ Update failed'); }
+};
+
+// ── DELETE BOOKING ──
+window.deleteBooking = async function(id) {
+  if (!confirm('Delete this booking?')) return;
+  try { await deleteDoc(doc(db,'bookings',id)); showToast('🗑️ Booking deleted'); }
+  catch(e) { showToast('❌ Delete failed'); }
+};
+
+// ── VIEW BOOKING ──
+window.viewBooking = function(id) {
+  const b = window._bookings.find(x => x.id === id);
+  if (!b) return;
+  document.getElementById('bookingModalBody').innerHTML = `
+    <div style="display:grid;gap:0.8rem">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <h4 style="font-size:1.1rem">${b.name}</h4>
+        <span class="badge ${b.status==='Completed'?'badge-green':b.status==='Confirmed'?'badge-blue':b.status==='Cancelled'?'badge-red':'badge-yellow'}">${b.status}</span>
+      </div>
+      <div style="background:var(--bg-soft);border-radius:9px;padding:1rem;display:grid;gap:0.5rem;font-size:0.88rem">
+        <div>📞 <strong>Phone:</strong> ${b.phone}</div>
+        <div>📍 <strong>Address:</strong> ${b.address}</div>
+        <div>🔧 <strong>Service:</strong> ${b.service}</div>
+        <div>🕐 <strong>Preferred Time:</strong> ${b.preferredTime ? new Date(b.preferredTime).toLocaleString('en-IN') : 'Not specified'}</div>
+        ${b.notes ? `<div>📝 <strong>Notes:</strong> ${b.notes}</div>` : ''}
+        <div>📅 <strong>Booked on:</strong> ${b.createdAt?.toDate ? b.createdAt.toDate().toLocaleString('en-IN') : 'Unknown'}</div>
+      </div>
+      <a class="btn btn-wa btn-sm" style="justify-content:center" onclick="openWA('Hello ${b.name}! This is ROJGARO regarding your ${b.service} booking.')">Reply on WhatsApp</a>
+    </div>`;
+  openModal('bookingModal');
+};
+
+// ── WORKER CRUD ──
+window.openWorkerModal = function(id) {
+  const w = id ? window._workers.find(x=>x.id===id) : null;
+  document.getElementById('workerModalTitle').textContent = w ? 'Edit Worker' : 'Add Worker';
+  document.getElementById('wm-id').value      = w?.id || '';
+  document.getElementById('wm-name').value    = w?.name || '';
+  document.getElementById('wm-skill').value   = w?.skill || '';
+  document.getElementById('wm-phone').value   = w?.phone || '';
+  document.getElementById('wm-location').value= w?.location || 'Solapur, Maharashtra';
+  document.getElementById('wm-status').value  = w?.status || 'Available';
+  openModal('workerModal');
+};
+window.saveWorker = async function() {
+  const id       = document.getElementById('wm-id').value;
+  const name     = document.getElementById('wm-name').value.trim();
+  const skill    = document.getElementById('wm-skill').value.trim();
+  const phone    = document.getElementById('wm-phone').value.trim();
+  const location = document.getElementById('wm-location').value.trim();
+  const status   = document.getElementById('wm-status').value;
+  if (!name || !skill || !phone) { showToast('⚠️ Name, Skill & Phone required'); return; }
+  try {
+    if (id) { await updateDoc(doc(db,'workers',id), { name, skill, phone, location, status }); showToast('✅ Worker updated'); }
+    else     { await addDoc(collection(db,'workers'), { name, skill, phone, location, status, createdAt: serverTimestamp() }); showToast('✅ Worker added'); }
+    closeModal('workerModal');
+  } catch(e) { showToast('❌ Save failed'); console.error(e); }
+};
+window.deleteWorker = async function(id) {
+  if (!confirm('Delete this worker?')) return;
+  try { await deleteDoc(doc(db,'workers',id)); showToast('🗑️ Worker deleted'); }
+  catch(e) { showToast('❌ Delete failed'); }
+};
+
+// ── SERVICE CRUD ──
+window.openServiceModal = function(id) {
+  const s = id ? window._services.find(x=>x.id===id) : null;
+  document.getElementById('serviceModalTitle').textContent = s ? 'Edit Service' : 'Add Service';
+  document.getElementById('sm-id').value    = s?.id || '';
+  document.getElementById('sm-name').value  = s?.name || '';
+  document.getElementById('sm-icon').value  = s?.icon || '';
+  document.getElementById('sm-desc').value  = s?.desc || '';
+  document.getElementById('sm-price').value = s?.price || '';
+  document.getElementById('sm-status').value= s?.status || 'Active';
+  openModal('serviceModal');
+};
+window.saveService = async function() {
+  const id     = document.getElementById('sm-id').value;
+  const name   = document.getElementById('sm-name').value.trim();
+  const icon   = document.getElementById('sm-icon').value.trim();
+  const desc   = document.getElementById('sm-desc').value.trim();
+  const price  = document.getElementById('sm-price').value.trim();
+  const status = document.getElementById('sm-status').value;
+  if (!name || !icon || !desc || !price) { showToast('⚠️ All fields required'); return; }
+  try {
+    if (id) { await updateDoc(doc(db,'services',id), { name, icon, desc, price, status }); showToast('✅ Service updated'); }
+    else     { await addDoc(collection(db,'services'), { name, icon, desc, price, status, createdAt: serverTimestamp() }); showToast('✅ Service added'); }
+    closeModal('serviceModal');
+  } catch(e) { showToast('❌ Save failed'); console.error(e); }
+};
+window.deleteService = async function(id) {
+  if (!confirm('Delete this service?')) return;
+  try { await deleteDoc(doc(db,'services',id)); showToast('🗑️ Service deleted'); }
+  catch(e) { showToast('❌ Delete failed'); }
+};
+
+// ── INIT APP ──
+async function init() {
+  try {
+    await seedServices();
+  } catch(e) {
+    console.warn('Firebase not configured yet. Running in demo mode.');
+  }
+  document.getElementById('loadingScreen').style.display = 'none';
+  document.getElementById('mainNav').style.display = 'flex';
+}
+init();
+</script>
+
+<script>
+// ── PAGE NAVIGATION ──
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  document.querySelectorAll('.nav-links a[id]').forEach(a => a.classList.remove('active'));
+  const el = document.getElementById('nav-' + id);
+  if (el) el.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  const isAdmin = id === 'admin';
+  document.getElementById('siteFooter').style.display = isAdmin ? 'none' : 'block';
+  document.getElementById('waFloat').style.display    = isAdmin ? 'none' : 'grid';
+  if (document.getElementById('mobMenu').style.display === 'flex') toggleMob();
+}
+
+function toggleMob() {
+  const m = document.getElementById('mobMenu');
+  m.style.display = m.style.display === 'flex' ? 'none' : 'flex';
+}
+
+// ── ADMIN LOGIN ──
+function checkAdminLogin() {
+  const val = document.getElementById('adminPassInput').value;
+  if (val === ADMIN_PASSWORD) {
+    document.getElementById('adminLogin').style.display = 'none';
+    document.getElementById('adminDashboard').style.display = 'block';
+    document.getElementById('loginError').style.display = 'none';
+    if (window._bookings) { window.renderAdminStats(); window.renderBookingsTable(); window.renderWorkersTable(); window.renderServicesTable(); window.renderRecentBookings(); }
+  } else {
+    document.getElementById('loginError').style.display = 'block';
+    document.getElementById('adminPassInput').value = '';
+  }
+}
+
+function adminLogout() {
+  document.getElementById('adminLogin').style.display = 'flex';
+  document.getElementById('adminDashboard').style.display = 'none';
+  document.getElementById('adminPassInput').value = '';
+  showPage('home');
+}
+
+function switchAdmin(section) {
+  document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
+  document.getElementById('admin-' + section).classList.add('active');
+  document.querySelectorAll('.admin-nav a[id]').forEach(a => a.classList.remove('active'));
+  document.getElementById('adm-' + section).classList.add('active');
+}
+
+// ── MODALS ──
+function openModal(id)  { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-overlay').forEach(o => {
+  o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); });
+});
+
+// ── WHATSAPP ──
+function openWA(msg) {
+  window.open('https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(msg), '_blank');
+}
+function bookService(service) {
+  openWA(`Hi ROJGARO! 👋\n\nI want to book a *${service}* service in Solapur.\n\nPlease confirm availability.`);
+}
+function sendContactWA() {
+  const name = document.getElementById('c-name').value.trim();
+  const phone = document.getElementById('c-phone').value.trim();
+  const service = document.getElementById('c-service').value;
+  const msg = document.getElementById('c-msg').value.trim();
+  let text = `📩 *Message via ROJGARO Website*\n\n`;
+  if (name) text += `👤 *Name:* ${name}\n`;
+  if (phone) text += `📞 *Phone:* ${phone}\n`;
+  if (service) text += `🔧 *Topic:* ${service}\n`;
+  if (msg) text += `💬 *Message:* ${msg}\n`;
+  openWA(text);
+}
+
+// ── TOAST ──
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+</script>
+</body>
+</html>
